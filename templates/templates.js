@@ -22,6 +22,6 @@ module.exports = {
     "mongooseErrorHandler.js": require("./utils/mongooseErrorHandler.js")
   },
   "modules": {
-    "controller-factory.js": require(".//modules/controller-factory.js")
+    "controller-factory.js": require("./modules/controller-factory.js")
   },
 }
