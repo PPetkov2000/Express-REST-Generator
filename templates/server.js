@@ -6,11 +6,14 @@ const logger = require("morgan")
 const connectDB = require("./config/database")
 const { notFound, errorHandler } = require("./middleware/errorHandler")
 const userRoutes = require("./routes/user")
+const requestsLimiter = require("./middleware/requestsLimiter");
 
 dotenv.config()
 connectDB()
 
 const app = express()
+
+requestsLimiter.setup(app)
 
 app.use(logger("dev"))
 app.use(cors())
@@ -18,7 +21,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 
-app.use("/api/users", userRoutes)
+app.use("/api/v1/users", userRoutes)
 
 app.use(notFound)
 app.use(errorHandler)

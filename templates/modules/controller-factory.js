@@ -1,37 +1,37 @@
 module.exports = `module.exports = function (model) {
   function getAll(req, res, next) {
-    model
+    return model
       .find()
       .then((docs) => res.json(docs))
-      .catch(next)
+      .catch(next);
   }
 
   function getOne(req, res, next) {
-    model
-      .findById(req.params.id)
+    return model
+      .findById(req.params.id || req.user._id)
       .then((doc) => res.json(doc))
-      .catch(next)
+      .catch(next);
   }
 
   function createOne(req, res, next) {
-    model
+    return model
       .create(req.body)
       .then((doc) => res.status(201).json(doc))
-      .catch(next)
+      .catch(next);
   }
 
   function updateOne(req, res, next) {
-    model
-      .updateOne({ _id: req.params.id, creatorId: req.user._id }, req.body)
+    return model
+      .updateOne({ _id: req.params.id || req.user._id }, req.body)
       .then(() => res.status(200).json({ message: "Updated successfully!" }))
-      .catch(next)
+      .catch(next);
   }
 
   function deleteOne(req, res, next) {
-    model
+    return model
       .findOneAndDelete({ _id: req.params.id })
       .then(() => res.json({ message: "Deleted successfully!" }))
-      .catch(next)
+      .catch(next);
   }
 
   function createOneWithRelations(relationModel, relationDoc) {
@@ -45,11 +45,11 @@ module.exports = `module.exports = function (model) {
               { _id: req.user._id },
               { $push: { [relationDoc]: createdDoc._id } }
             ),
-          ])
+          ]);
         })
         .then(([createdDoc, _]) => res.status(201).json(createdDoc))
-        .catch(next)
-    }
+        .catch(next);
+    };
   }
 
   function deleteOneWithRelations(relationModel, relationDoc) {
@@ -60,11 +60,11 @@ module.exports = `module.exports = function (model) {
           return relationModel.updateOne(
             { _id: req.user._id },
             { $pull: { [relationDoc]: req.params.id } }
-          )
+          );
         })
         .then(() => res.json({ message: "Deleted successfully!" }))
-        .catch(next)
-    }
+        .catch(next);
+    };
   }
 
   function getAllDocuments(options = {}) {
@@ -72,22 +72,22 @@ module.exports = `module.exports = function (model) {
       model
         .find()
         .populate(options.populate || null)
-        .limit(options.limit || null)
         .sort(options.sort || null)
+        .limit(options.limit || null)
         .then((doc) => res.json(doc))
-        .catch(next)
-    }
+        .catch(next);
+    };
   }
 
   function getOneDocument(options = {}) {
     return function (req, res, next) {
       model
-        .findById(req.params.id)
+        .findById(req.params.id || req.user._id)
         .populate(options.populate || null)
         .select(options.select || null)
         .then((doc) => res.json(doc))
-        .catch(next)
-    }
+        .catch(next);
+    };
   }
 
   return {
@@ -100,6 +100,6 @@ module.exports = `module.exports = function (model) {
     deleteOneWithRelations,
     getAllDocuments,
     getOneDocument,
-  }
-}
+  };
+};
 `
