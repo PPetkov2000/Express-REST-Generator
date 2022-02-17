@@ -3,6 +3,7 @@ const dotenv = require("dotenv")
 const cors = require("cors")
 const cookieParser = require("cookie-parser")
 const logger = require("morgan")
+const helmet = require("helmet");
 const connectDB = require("./config/database")
 const { notFound, errorHandler } = require("./middleware/errorHandler")
 const userRoutes = require("./routes/user")
@@ -15,6 +16,7 @@ const app = express()
 
 requestsLimiter.setup(app)
 
+app.use(helmet());
 app.use(logger("dev"))
 app.use(cors())
 app.use(express.json())
