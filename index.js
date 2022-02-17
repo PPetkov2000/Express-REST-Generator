@@ -55,8 +55,8 @@ const createPackageJSON = () => {
 
 const installPackages = () => {
   return new Promise(resolve => {
-    console.log("\nInstalling express, mongodb, mongoose, cookie-parser, dotenv, bcrypt, jsonwebtoken, cors, morgan, nodemon\n".cyan)
-    shell.exec(`npm install --save express mongodb mongoose cookie-parser dotenv bcrypt jsonwebtoken cors morgan && npm install --save-dev nodemon`, () => {
+    console.log("\nInstalling express, mongodb, mongoose, cookie-parser, dotenv, bcrypt, jsonwebtoken, cors, morgan, helmet, nodemon\n".cyan)
+    shell.exec(`npm install --save express mongodb mongoose cookie-parser dotenv bcrypt jsonwebtoken cors morgan helmet && npm install --save-dev nodemon`, () => {
       console.log("\nFinished installing packages\n".green)
       resolve()
     })
