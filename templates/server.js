@@ -17,10 +17,10 @@ const app = express()
 requestsLimiter.setup(app)
 
 app.use(helmet());
-app.use(logger("dev"))
-app.use(cors())
+process.env.NODE_ENV !== 'prod' && app.use(logger("dev"))
+app.use(cors({ origin: '127.0.0.1', credentials: true }))
 app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: false, limit: '50mb' }))
 app.use(cookieParser())
 
 app.use("/api/v1/users", userRoutes)
