@@ -22,7 +22,7 @@ module.exports = `module.exports = function (model) {
 
   function updateOne(req, res, next) {
     return model
-      .updateOne({ _id: req.params.id || req.user._id }, req.body)
+      .updateOne({ _id: req.params.id || req.user._id }, req.body, { runValidators: true })
       .then(() => res.status(200).json({ message: "Updated successfully!" }))
       .catch(next);
   }
@@ -44,6 +44,7 @@ module.exports = `module.exports = function (model) {
             relationModel.updateOne(
               { _id: req.user._id },
               { $push: { [relationDoc]: createdDoc._id } }
+              { runValidators: true }
             ),
           ]);
         })
@@ -60,6 +61,7 @@ module.exports = `module.exports = function (model) {
           return relationModel.updateOne(
             { _id: req.user._id },
             { $pull: { [relationDoc]: req.params.id } }
+            { runValidators: true }
           );
         })
         .then(() => res.json({ message: "Deleted successfully!" }))
