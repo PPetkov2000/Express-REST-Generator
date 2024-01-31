@@ -14,14 +14,14 @@ connectDB()
 
 const app = express()
 
-requestsLimiter.setup(app)
-
 app.use(helmet());
 process.env.NODE_ENV !== 'prod' && app.use(logger("dev"))
 app.use(cors({ origin: '127.0.0.1', credentials: true }))
-app.use(express.json())
-app.use(express.urlencoded({ extended: false, limit: '50mb' }))
+app.use(express.json({ limit: '10kb' }))
+app.use(express.urlencoded({ extended: false, limit: '10kb' }))
 app.use(cookieParser())
+
+requestsLimiter.setup(app)
 
 app.use("/api/v1/users", userRoutes)
 
